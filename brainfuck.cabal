@@ -1,18 +1,18 @@
--- This file has been generated from package.yaml by hpack version 0.27.0.
+-- This file has been generated from package.yaml by hpack version 0.20.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2be9f067b5d84620752a84ec9b93cbcd19490693ef4ae01f239a8eaaa82f2fc5
+-- hash: 40d811a6a32a4327559d38954fdd32ec61f4f8d5144ee1b45b2723da9320cac7
 
 name:           brainfuck
 version:        0.1.0.0
-description:    Please see the README on Github at <https://github.com/ydm/brainfuck#readme>
+description:    Please see the README on Github at <https://github.com/ydm/brainfuck-in-haskell>
 homepage:       https://github.com/ydm/brainfuck#readme
 bug-reports:    https://github.com/ydm/brainfuck/issues
 author:         Yordan Miladinov
 maintainer:     jordanMiladinov@gmail.com
 copyright:      Copyleft
-license:        BSD3
+license:        GPLv3
 license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
@@ -26,20 +26,19 @@ source-repository head
   location: https://github.com/ydm/brainfuck
 
 library
-  exposed-modules:
-      Lib
-  other-modules:
-      Paths_brainfuck
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
+    , vector
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_brainfuck
   default-language: Haskell2010
 
 executable brainfuck-exe
   main-is: Main.hs
-  other-modules:
-      Paths_brainfuck
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Wextra
@@ -47,17 +46,20 @@ executable brainfuck-exe
       base >=4.7 && <5
     , brainfuck
     , vector
+  other-modules:
+      Paths_brainfuck
   default-language: Haskell2010
 
 test-suite brainfuck-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
-  other-modules:
-      Paths_brainfuck
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Wextra
   build-depends:
       base >=4.7 && <5
     , brainfuck
+    , vector
+  other-modules:
+      Paths_brainfuck
   default-language: Haskell2010

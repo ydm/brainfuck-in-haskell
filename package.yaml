@@ -1,7 +1,7 @@
 name:                brainfuck
 version:             0.1.0.0
 github:              "ydm/brainfuck"
-license:             BSD3
+license:             GPLv3
 author:              "Yordan Miladinov"
 maintainer:          "jordanMiladinov@gmail.com"
 copyright:           "Copyleft"
@@ -17,10 +17,11 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on Github at <https://github.com/ydm/brainfuck#readme>
+description:         Please see the README on Github at <https://github.com/ydm/brainfuck-in-haskell>
 
 dependencies:
 - base >= 4.7 && < 5
+- vector
 
 library:
   source-dirs: src
@@ -37,7 +38,6 @@ executables:
     - -Wextra
     dependencies:
     - brainfuck
-    - vector
 
 tests:
   brainfuck-test:
@@ -47,5 +47,7 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
+    - -Wextra
     dependencies:
     - brainfuck
