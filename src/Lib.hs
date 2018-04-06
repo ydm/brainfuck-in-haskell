@@ -81,20 +81,22 @@ extractLoop = rev <$> f "" 0
         rev (a, b) = (reverse a, b)
 
 interpret' :: String -> State -> IO State
-interpret'        ""   state       = return state
+interpret'      ""   state       = return state
 interpret'   ('<':xs) (State st i) = interpret' xs $ State st $ i - 1
 interpret'   ('>':xs) (State st i) = interpret' xs $ State st $ i + 1
 interpret'   ('+':xs)  state       = op plus        state >>= interpret' xs
 interpret'   ('-':xs)  state       = op minus       state >>= interpret' xs
 interpret'   ('.':xs)  state       = op printAsChar state >>= interpret' xs
 interpret'   (',':xs)  state       = op readAsInt8  state >>= interpret' xs
-interpret' s@('[':_ )  state       = do
-  let (body, rest) = extractLoop s
+interpret' s@('[':_ )  state       = interpretLoop (extractLoop s) state
+interpret'   (  _:xs)  state       = interpret' xs state
+
+interpretLoop :: (String, String) -> State -> IO State
+interpretLoop tup@(body, rest) state = do
   res <- testCondition state
   if res
-    then interpret' body state >>= interpret' s
+    then interpret' body state >>= interpretLoop tup
     else interpret' rest state
-interpret'   (_:xs)   state        = interpret' xs state
 
 interpret :: String -> IO State
 interpret code = do
