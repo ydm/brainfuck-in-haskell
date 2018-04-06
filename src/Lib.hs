@@ -68,7 +68,7 @@ testCondition (State stack index) = (0 /=) <$> PM.read stack index
 -- + Parsing & interpretation |
 -- +--------------------------+
 
--- | Split a code string to body and what's after that.
+-- | Split the given code string to loop body and what's after that.
 extractLoop :: String -> (String, String)
 extractLoop = rev <$> f "" 0
   where f :: String -> Int -> String -> (String, String)
