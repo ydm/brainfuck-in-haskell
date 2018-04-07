@@ -14,5 +14,5 @@ main = do
   end <- interpret code
   hClose handle
 
-  putStr "END STATE: "
+  putStr "\nEND STATE: "
   printStateLn end

@@ -1,6 +1,7 @@
 module Lib where
 
-import Data.Char (chr, ord)
+import Control.Exception (catch)
+import Data.Char (chr, ord, isPrint)
 import Data.Int (Int8)
 import Data.List (intersperse)
 
@@ -55,10 +56,14 @@ coerce :: (Num c, Integral a) => a -> c
 coerce = fromInteger . toInteger
 
 printAsChar :: Int8 -> IO Int8
-printAsChar x = (putChar . chr . coerce) x >> return x
+printAsChar x
+  | 32 <= x && x <= 126 = (putChar . chr . coerce) x >> return x
+  | otherwise         = putStr "\\" >> putStr (show x) >> return x
 
 readAsInt8 :: Int8 -> IO Int8
-readAsInt8 _ = getChar >>= return . coerce . ord
+readAsInt8 _ = catch (getChar >>= return . coerce . ord) f
+  where f :: (IOError -> IO Int8)
+        f _ = return 0
 
 testCondition :: State -> IO Bool
 testCondition (State stack index) = (0 /=) <$> PM.read stack index
@@ -89,6 +94,7 @@ interpret'   ('-':xs)  state       = op minus       state >>= interpret' xs
 interpret'   ('.':xs)  state       = op printAsChar state >>= interpret' xs
 interpret'   (',':xs)  state       = op readAsInt8  state >>= interpret' xs
 interpret' s@('[':_ )  state       = interpretLoop (extractLoop s) state
+interpret'   ('!':xs)  state       = printStateLn state >> interpret' xs state
 interpret'   (  _:xs)  state       = interpret' xs state
 
 interpretLoop :: (String, String) -> State -> IO State
